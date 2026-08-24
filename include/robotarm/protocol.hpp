@@ -6,6 +6,16 @@
 
 namespace robotarm {
 
+struct Response {
+    uint8_t id;
+    uint8_t error;
+    std::vector<uint8_t> data;
+    bool valid; 
+
+};
+
+Response parse_response(const std::vector<uint8_t>& rew);
+
 uint8_t checksum(const std::vector<uint8_t>& bytes);
 
 std::vector<uint8_t> build_packet(uint8_t id, uint8_t instruction, const std::vector<uint8_t>& params);

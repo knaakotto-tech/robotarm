@@ -42,5 +42,22 @@ std::vector<uint8_t> build_packet(uint8_t id, uint8_t instruction, const std::ve
     return result;
 }
 
+Response parse_response(const std::vector<uint8_t>& rew) {
+
+    Response r;
+
+    r.id = rew[2];
+    r.error = rew[4];
+    r.data.insert(r.data.end(), rew.begin() + 5, rew.begin() + 5 + rew[3]-2);
+
+    std::vector<uint8_t> body;
+
+    body.insert(body.end(), rew.begin() + 2, rew.end() -1);
+
+    r.valid = (rew.back() == checksum(body));
+
+
+    return r;
+}
 
 }
