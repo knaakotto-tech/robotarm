@@ -1,2 +1,4 @@
 build/
 .DS_Store
+mock_test
+protocol_test
