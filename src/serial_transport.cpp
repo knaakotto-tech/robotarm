@@ -2,13 +2,29 @@
 
 #include <fcntl.h>
 #include <unistd.h>
+#include <stdexcept>
+#include <termios.h>
 
 namespace robotarm {
 
 SerialTransport::SerialTransport(const std::string& pathName) {
     //Oeffnet den Port 
     fd_ = open(pathName.c_str(), O_RDWR | O_NOCTTY);
+    
+    //Falls es einen Fehler mit dem Port gibt:
+    if (fd_ < 0) {
+        throw std::runtime_error("Port lässt sich nicht öffnen; " + pathName);
+    }
+    struct termios tty;
+    tcgetattr(fd_, &tty);
 
+    #ifdef __APPLE__
+    //macOS Variante weil es bei MacOS nur bis B230400 geht
+    #else
+
+    cfsetospeed(&tty, B1000000);
+    cfsetispeed(&tty, B1000000);
+    #endif
 }
 
 SerialTransport::~SerialTransport() {
