@@ -65,4 +65,20 @@ Response parse_response(const std::vector<uint8_t>& rew) {
     return r;
 }
 
+
+uint16_t to_uint16(uint8_t lowByte, uint8_t highByte) {
+    return (static_cast<uint16_t>(highByte) << 8) + lowByte;
+}
+
+std::vector<uint8_t> to_low_high(uint16_t wert) {
+    std::vector<uint8_t> LowAndHigh;
+
+    LowAndHigh.push_back(static_cast<uint8_t>(wert));
+    LowAndHigh.push_back(static_cast<uint8_t>(wert >> 8));
+
+    return LowAndHigh;
+
+}
+
+
 }
