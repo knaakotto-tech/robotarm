@@ -16,12 +16,15 @@ SerialTransport::SerialTransport(const std::string& pathName) {
         throw std::runtime_error("Port lässt sich nicht öffnen; " + pathName);
     }
     struct termios tty;
+    //seist den Port zu
     tcgetattr(fd_, &tty);
+    //nimmt das orginal
     cfmakeraw(&tty);
+    //bestimmt die wartezeit von 0,1 s
     tty.c_cc[VMIN] = 0;
     tty.c_cc[VTIME] = 1;
     
-
+    
     #ifdef __APPLE__
     //macOS Variante weil es bei MacOS nur bis B230400 geht
     #else
@@ -29,6 +32,7 @@ SerialTransport::SerialTransport(const std::string& pathName) {
     cfsetospeed(&tty, B1000000);
     cfsetispeed(&tty, B1000000);
     #endif
+    //gibt alles weiter
     tcsetattr(fd_, TCSANOW, &tty);
 }
 

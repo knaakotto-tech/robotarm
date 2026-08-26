@@ -1,0 +1,9 @@
+build/
+.DS_Store
+mock_test
+protocol_test
+
+# generierte CAD-Ausgaben
+cad/*.stl
+cad/*.3mf
+cad/*.gcode
