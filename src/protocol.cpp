@@ -46,6 +46,11 @@ Response parse_response(const std::vector<uint8_t>& rew) {
 
     Response r;
 
+    if (rew.size() < 6){
+        r.valid = false;
+        return r;
+    }
+
     r.id = rew[2];
     r.error = rew[4];
     r.data.insert(r.data.end(), rew.begin() + 5, rew.begin() + 5 + rew[3]-2);
