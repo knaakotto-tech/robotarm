@@ -17,6 +17,10 @@ SerialTransport::SerialTransport(const std::string& pathName) {
     }
     struct termios tty;
     tcgetattr(fd_, &tty);
+    cfmakeraw(&tty);
+    tty.c_cc[VMIN] = 0;
+    tty.c_cc[VTIME] = 1;
+    
 
     #ifdef __APPLE__
     //macOS Variante weil es bei MacOS nur bis B230400 geht
@@ -25,6 +29,7 @@ SerialTransport::SerialTransport(const std::string& pathName) {
     cfsetospeed(&tty, B1000000);
     cfsetispeed(&tty, B1000000);
     #endif
+    tcsetattr(fd_, TCSANOW, &tty);
 }
 
 SerialTransport::~SerialTransport() {
