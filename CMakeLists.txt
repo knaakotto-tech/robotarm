@@ -14,3 +14,6 @@ target_include_directories(mock_test PRIVATE include)
 add_executable(protocol_test apps/protocol_test.cpp src/protocol.cpp)
 target_include_directories(protocol_test PRIVATE include)
 
+add_executable(bus_test apps/bus_test.cpp src/servo_bus.cpp src/protocol.cpp)
+target_include_directories(bus_test PRIVATE include)
+

@@ -7,10 +7,11 @@
 namespace robotarm {
 
 struct Response {
-    uint8_t id;
-    uint8_t error;
+    uint8_t id = 0;
+    //error ist nur dann aussagekräftig wenn valid == true ist
+    uint8_t error = 0;
     std::vector<uint8_t> data;
-    bool valid; 
+    bool valid = false; 
 
 };
 

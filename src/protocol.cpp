@@ -45,6 +45,7 @@ std::vector<uint8_t> build_packet(uint8_t id, uint8_t instruction, const std::ve
 Response parse_response(const std::vector<uint8_t>& rew) {
 
     Response r;
+   
 
     if (rew.size() < 6){
         r.valid = false;
