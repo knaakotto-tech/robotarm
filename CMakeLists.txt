@@ -17,3 +17,5 @@ target_include_directories(protocol_test PRIVATE include)
 add_executable(bus_test apps/bus_test.cpp src/servo_bus.cpp src/protocol.cpp)
 target_include_directories(bus_test PRIVATE include)
 
+add_executable(move_test apps/move_test.cpp src/servo_bus.cpp src/serial_transport.cpp src/protocol.cpp)
+target_include_directories(move_test PRIVATE include)
