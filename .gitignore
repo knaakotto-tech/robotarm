@@ -4,6 +4,9 @@ mock_test
 protocol_test
 bus_test
 
+.idea/
+cmake-build-debug/
+
 # generierte CAD-Ausgaben
 cad/*.stl
 cad/*.3mf
