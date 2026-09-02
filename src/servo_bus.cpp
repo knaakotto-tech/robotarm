@@ -1,14 +1,21 @@
 #include <robotarm/servo_bus.hpp>
 #include <vector>
-
+#include <cstdio>
 
 namespace robotarm {
 
-Response ServoBus::write_register(uint8_t id, uint8_t adresse, const std::vector<uint8_t>& werte) {
+Response ServoBus::write_register(uint8_t id, Register reg, const std::vector<uint8_t>& werte) {
+
+    //sicherheit das nicht zu viele oder zu wenig Daten über geben werden
+    if (werte.size() != reg.width) {
+        Response r;
+        fprintf(stderr, "Falsche Werte übergeben, erwartet = %d Anzahl erhaltener Werte = %zu\n", static_cast<int>(reg.width), werte.size());
+        return r;
+    }
 
     std::vector<uint8_t> params;
 
-    params.push_back(adresse);
+    params.push_back(reg.address);
     params.insert(params.end(), werte.begin(), werte.end());
 
 
@@ -23,17 +30,17 @@ Response ServoBus::write_register(uint8_t id, uint8_t adresse, const std::vector
 
 }
 
-Response ServoBus::read_register(uint8_t id, uint8_t adresse, uint8_t anzahl) {
+Response ServoBus::read_register(uint8_t id, Register reg) {
 
     std::vector<uint8_t> param;
-    param.push_back(adresse);
-    param.push_back(anzahl);
+    param.push_back(reg.address);
+    param.push_back(reg.width);
 
     std::vector<uint8_t> pack = build_packet(id, 0x02, param);
 
     transport_.write(pack);
 
-    uint8_t antwort_laenge = 6 + anzahl;
+    uint8_t antwort_laenge = 6 + reg.width;
 
     return parse_response(transport_.read(antwort_laenge, 100));
 

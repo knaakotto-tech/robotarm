@@ -48,7 +48,10 @@ Response parse_response(const std::vector<uint8_t>& rew) {
    
 
     if (rew.size() < 6){
-        r.valid = false;
+        return r;
+    }
+    
+    if(rew.size() != rew[3] + 4){
         return r;
     }
 

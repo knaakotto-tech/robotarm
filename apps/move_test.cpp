@@ -33,7 +33,7 @@ int main() {
     bus.write_register(1, robotarm::R_TORQUE_ENABLE, {1});
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    robotarm::Response r = bus.read_register(1, robotarm::R_PRESENT_POSITION, 2);
+    robotarm::Response r = bus.read_register(1, robotarm::R_PRESENT_POSITION);
     
     print_read(r);
 
@@ -42,7 +42,7 @@ int main() {
     std::this_thread::sleep_for(std::chrono::milliseconds(1500));
 
 
-    r = bus.read_register(1, robotarm::R_PRESENT_POSITION, 2);
+    r = bus.read_register(1, robotarm::R_PRESENT_POSITION);
 
     print_read(r);
 
@@ -50,7 +50,7 @@ int main() {
     std::this_thread::sleep_for(std::chrono::milliseconds(1500));
 
 
-    r = bus.read_register(1, robotarm::R_PRESENT_POSITION, 2);
+    r = bus.read_register(1, robotarm::R_PRESENT_POSITION);
    print_read(r);
 
 }

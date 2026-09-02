@@ -21,8 +21,8 @@ int main() {
     }
 
     printf("\n");
-
-    std::vector<uint8_t> antwort = {0xFF, 0xFF, 0x01, 0x04, 0x00, 0x08, 0xF2};
+*/
+    std::vector<uint8_t> antwort = {0xFF, 0xFF, 0x01, 0x04, 0x00, 0x00, 0x08, 0xF1};
     robotarm::Response r = robotarm::parse_response(antwort);
     printf("id=%02X error=%02X data=%zu valid=%d\n", r.id, r.error, r.data.size(), r.valid);
     std::vector<uint8_t> lese_antwort = {0x00, 0x08};
@@ -31,8 +31,8 @@ int main() {
     }
     printf("\n");
 
-*/
-    
+
+    /*
     std::vector<uint8_t> lesenParamenter = {robotarm::R_PRESENT_POSITION, 2}; 
 
     for (uint8_t b : robotarm::build_packet(0x01, 0x02, lesenParamenter)) {
@@ -45,7 +45,7 @@ int main() {
     std::vector<uint8_t> b = robotarm::to_low_high(1000);
 
     printf("%02X %02X -> %u\n", b[0], b[1], robotarm::to_uint16(b[0], b[1]));
-
+    */
     return 0;
 
 }
