@@ -9,7 +9,7 @@ namespace robotarm {
 class Transport {
     public:
         virtual ~Transport() = default;
- 
+        
         virtual bool write(const std::vector<uint8_t>& data) = 0;
 
         // Gibt zurueck, was innerhalb der Frist ankam - auch weniger als count.

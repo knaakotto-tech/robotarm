@@ -38,7 +38,7 @@ int main() {
     print_read(r);
 
 
-    bus.write_register(1, robotarm::R_GOAL_POSITION, robotarm::to_low_high(1000));
+    bus.write_register(1, robotarm::R_GOAL_POSITION, robotarm::to_low_high(0));
     std::this_thread::sleep_for(std::chrono::milliseconds(1500));
 
 
@@ -46,11 +46,11 @@ int main() {
 
     print_read(r);
 
-    bus.write_register(1, robotarm::R_GOAL_POSITION, robotarm::to_low_high(3000));
+    bus.write_register(1, robotarm::R_GOAL_POSITION, robotarm::to_low_high(4095));
     std::this_thread::sleep_for(std::chrono::milliseconds(1500));
 
 
     r = bus.read_register(1, robotarm::R_PRESENT_POSITION);
-   print_read(r);
+    print_read(r);
 
 }

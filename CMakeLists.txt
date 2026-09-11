@@ -11,7 +11,7 @@ target_include_directories(ping PRIVATE include)
 add_executable(mock_test apps/mock_test.cpp)
 target_include_directories(mock_test PRIVATE include)
 
-add_executable(protocol_test apps/protocol_test.cpp src/protocol.cpp)
+add_executable(protocol_test apps/protocol_test.cpp src/protocol.cpp src/joint.cpp)
 target_include_directories(protocol_test PRIVATE include)
 
 add_executable(bus_test apps/bus_test.cpp src/servo_bus.cpp src/protocol.cpp)
