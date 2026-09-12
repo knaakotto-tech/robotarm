@@ -27,4 +27,13 @@ TickResult degrees_to_ticks(const Joint& joint, float degrees) {
     return result;
 }
 
+float ticks_to_degrees(const Joint& joint, uint16_t ticks) {
+
+    float winkel = ((static_cast<int32_t>(ticks) - static_cast<int32_t>(joint.zero_ticks)) * DEGREE_PER_TICK) * static_cast<int>(joint.direction);
+    return winkel;
+}
+
+
+
+
 }

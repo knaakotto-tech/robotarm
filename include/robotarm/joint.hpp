@@ -29,5 +29,7 @@ struct TickResult {
 
 TickResult degrees_to_ticks(const Joint& joint, float degrees);
 
+float ticks_to_degrees(const Joint& joint, uint16_t ticks);
+
 
 }

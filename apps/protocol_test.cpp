@@ -49,14 +49,16 @@ int main() {
     */
 
 
-    robotarm::Joint joint{.servo_id = 1, .zero_ticks = 100, .direction = robotarm::Direction::normal, .min_degrees = -90, .max_degrees = 90, };
+    robotarm::Joint joint{.servo_id = 1, .zero_ticks = 2048, .direction = robotarm::Direction::normal, .min_degrees = -90, .max_degrees = 90, };
 
     robotarm::TickResult TR;
 
-    TR = robotarm::degrees_to_ticks(joint, -60);
+    TR = robotarm::degrees_to_ticks(joint, -90);
 
 
     printf("valid = %d ticks = %d\n", TR.valid, TR.ticks);
+
+    printf("to degrees: %g\n", robotarm::ticks_to_degrees(joint, TR.ticks));
 
     return 0;
 

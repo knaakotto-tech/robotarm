@@ -24,7 +24,7 @@ constexpr Register R_GOAL_SPEED = {.address = 46, .width = 2};
 
 
 constexpr Register R_PRESENT_POSITION = {.address = 56, .width = 2};
-// 2byte
+
 constexpr Register R_PRESENT_SPEED = {.address = 58, .width = 2};
 
 
