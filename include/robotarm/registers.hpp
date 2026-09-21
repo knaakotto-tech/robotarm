@@ -12,6 +12,8 @@ struct Register {
     uint8_t width;
 };
 
+// Sonderwert für R_TORQUE_ENABLE: aktuelle Position wird zu 2048
+constexpr uint8_t TORQUE_CALIBRATE_MIDDLE = 128;
 
 constexpr Register R_TORQUE_ENABLE = {.address = 40, .width = 1};
 

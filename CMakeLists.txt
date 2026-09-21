@@ -22,3 +22,6 @@ target_include_directories(move_test PRIVATE include)
 
 add_executable(torque_test apps/torque_test.cpp src/servo_bus.cpp src/serial_transport.cpp src/protocol.cpp)
 target_include_directories(torque_test PRIVATE include)
+
+add_executable(calibrate_middle apps/calibrate_middle.cpp src/servo_bus.cpp src/serial_transport.cpp src/protocol.cpp)
+target_include_directories(calibrate_middle PRIVATE include)
