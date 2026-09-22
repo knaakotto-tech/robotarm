@@ -15,14 +15,12 @@
 ## What this is
 
 A 5-servo robotic arm driven by Feetech STS3215 bus servos on a Raspberry Pi 5.
-The mechanical design is a custom one. <!-- TODO: credit the designer here -->
+Mechanics, CAD and control software are all my own work.
 
 The point of the project is the software. Feetech ships an SDK; this repository
 deliberately does not use it. Every layer — serial port setup, packet framing,
 checksums, register access, joint math — is implemented here, so that each byte
 on the wire is something I can explain.
-
-Mechanical brackets are designed in OpenSCAD (`cad/`) and printed on a Bambu Lab A1.
 
 ## Architecture
 
@@ -31,7 +29,7 @@ interface, which is what makes everything above it testable without hardware.
 
 ```mermaid
 flowchart TD
-    A["apps/ — ping, move_test, bus_test, ..."] --> B["Joint — degrees ↔ ticks, software limits"]
+    A["apps/ — ping, move_test, calibrate_middle, measure_limits, ..."] --> B["Joint — degrees ↔ ticks, software limits"]
     A --> C["ServoBus — read_register / write_register"]
     B -.-> C
     C --> D["protocol — build_packet / parse_response / checksum"]
@@ -74,12 +72,8 @@ the address so the bus layer can reject a malformed write before it is sent.
 | Servos | 5× Feetech STS3215 (12 V, C018, 1:345), IDs 1–5 |
 | Bus adapter | Waveshare Bus Servo Adapter A, USB mode → `/dev/ttyACM0` |
 | Controller | Raspberry Pi 5 |
-| Power | 12 V / 5 A, split into two feed branches instead of daisy-chaining all servos |
+| Power | 12 V / 5 A |
 | Mechanics | Custom design, printed on a Bambu Lab A1 |
-
-Power is fed in at two points on purpose: the JST connectors and traces on a servo
-are not rated for the summed current of every servo behind it. From roughly the
-third servo in a chain, the first connector becomes the bottleneck.
 
 ## Repository layout
 
@@ -112,8 +106,10 @@ Targets that need no hardware — these run anywhere:
 Targets that need a connected servo bus:
 
 ```bash
-./build/ping             # ping servo ID 1
-./build/move_test        # enable torque, drive to both ends, read position back
+./build/ping              # ping servo ID 1
+./build/move_test         # enable torque, drive to both ends, read position back
+./build/calibrate_middle  # re-centre a servo on its mechanical middle
+./build/measure_limits    # torque off, move a joint by hand, record min/max ticks
 ```
 
 On Linux the user needs access to the serial device:
@@ -132,9 +128,13 @@ open while waiting for a modem signal that never arrives.
 - [x] Protocol layer — packet building, checksum, response parsing
 - [x] Register map with address + width
 - [x] `ServoBus` — read/write registers, verified against live servos
-- [x] Joint layer — degree/tick conversion with software end stops
-- [ ] Torque off on program exit
-- [ ] Calibration tool to measure real zero positions
+- [x] Servo IDs 1–5 assigned and commissioned
+- [x] Joint layer — `degrees_to_ticks` / `ticks_to_degrees`, round-trip tested
+      across the full angle range and both directions
+- [x] All five servos re-centred with the built-in middle-point calibration
+- [x] Tool to measure the real travel range of each joint by hand
+- [ ] Per-joint limits filled in from the measurements
+- [ ] Move to a defined rest position before torque is released
 - [ ] `Arm` layer — several joints, synchronised writes
 - [ ] Interpolation and kinematics
 - [ ] Input layer (gamepad or web UI)
@@ -150,6 +150,13 @@ A few decisions that shaped the rest of the code:
 * **Length checks before indexing.** In `parse_response`, the `size() < 6` guard
   has to come before comparing against the length byte, otherwise the subtraction
   wraps around on an unsigned type and a short reply passes as valid.
+* **The zero point lives in the servo, not in software.** All five servos were
+  re-centred using the STS3215's built-in middle-point calibration, so `zero_ticks`
+  is 2048 for every joint and that position is the arm standing upright. Joints 2
+  and 3 travel more than 180°, which would otherwise have put the 4095 → 0 tick
+  wraparound in the middle of their working range. Repositioning the servo horn
+  mechanically would have achieved the same, but has to be redone whenever a
+  bracket changes.
 * **Software end stops live in the joint layer.** A joint driven past its
   mechanical limit works ~30 kg·cm against its own bracket. The limit check
   happens before a packet is ever built.
