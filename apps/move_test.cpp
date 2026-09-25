@@ -16,9 +16,7 @@ void print_read(const robotarm::Response& r) {
     
     if(r.valid == true) {
         printf("valid=%d station=", r.valid);
-        for(uint8_t b : r.data){
-            printf("%02X", b);
-        }
+        printf("Ticks: %d", robotarm::to_uint16(r.data[0], r.data[1]));
     } else{
         printf("unvollsänding => %d ", r.valid);
 
@@ -30,7 +28,7 @@ void print_read(const robotarm::Response& r) {
 }
 
 
-void set_print_position(uint8_t winkel, robotarm::ServoBus& bus, int id_eingabe){
+void set_print_position(int16_t winkel, robotarm::ServoBus& bus, int id_eingabe){
     
     robotarm::Response r = bus.read_register(id_eingabe, robotarm::R_PRESENT_POSITION);
 
@@ -41,7 +39,7 @@ void set_print_position(uint8_t winkel, robotarm::ServoBus& bus, int id_eingabe)
     robotarm::TickResult ziel = robotarm::degrees_to_ticks(joint, winkel);
 
     if(!ziel.valid){
-        printf("Winkel %.1f ligt nicht in den voegeschirebeden grenzen von gelenk %d\n", winkel, joint.servo_id);
+        printf("Winkel %d ligt nicht in den voegeschirebeden grenzen von gelenk %d\n", winkel, joint.servo_id);
         return;
     }
 
@@ -62,13 +60,13 @@ void set_print_position(uint8_t winkel, robotarm::ServoBus& bus, int id_eingabe)
         int tasten_druck = poll(&tastatur, 1, 0);
 
         if(tasten_druck > 0){
-            printf("Tastendruck erkannt, winkel: %d wurde abgebrochen", winkel);
+            printf("Tastendruck erkannt, winkel: %d wurde abgebrochen\n", winkel);
             position_ready = false;
         }
 
         if (r.valid == false){continue;}
 
-        if(robotarm::to_uint16(r.data[0], r.data[1]) == winkel || tasten_druck > 0){position_ready = false;}
+        if(robotarm::to_uint16(r.data[0], r.data[1]) >= ziel.ticks -5 && robotarm::to_uint16(r.data[0], r.data[1]) <= ziel.ticks +5 ){position_ready = false;}
 
 
         
