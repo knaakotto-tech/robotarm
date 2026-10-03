@@ -15,7 +15,10 @@ struct Joint {
     Direction direction;
     float min_degrees;
     float max_degrees;
-    
+    //sagt welcher winkel 
+    float rest_degrees;
+    //sagt die Reinvolge an
+    uint8_t rest_stage;
 };  
 
 constexpr float TICKS_PER_DEGREE = 4096.0f / 360.0f;

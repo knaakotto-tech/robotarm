@@ -8,11 +8,11 @@ namespace robotarm {
 
     //id -1 und so bekommt man seinen richtigen joint 
     constexpr std::array<Joint, 5> JOINTS = {{
-        {.servo_id = 1, .zero_ticks = 2048, .direction = Direction::normal, .min_degrees = -30.0f, .max_degrees = 30.0f},
-        {.servo_id = 2, .zero_ticks = 2048, .direction = Direction::normal, .min_degrees = -30.0f, .max_degrees = 30.0f},
-        {.servo_id = 3, .zero_ticks = 2048, .direction = Direction::normal, .min_degrees = -30.0f, .max_degrees = 30.0f},
-        {.servo_id = 4, .zero_ticks = 2048, .direction = Direction::normal, .min_degrees = -30.0f, .max_degrees = 30.0f},
-        {.servo_id = 5, .zero_ticks = 2048, .direction = Direction::normal, .min_degrees = -30.0f, .max_degrees = 30.0f}
+        {.servo_id = 1, .zero_ticks = 2048, .direction = Direction::normal, .min_degrees = -30.0f, .max_degrees = 30.0f, .rest_degrees = 0.0f, .rest_stage = 2},
+        {.servo_id = 2, .zero_ticks = 2048, .direction = Direction::normal, .min_degrees = -30.0f, .max_degrees = 30.0f, .rest_degrees = 0.0f, .rest_stage = 1},
+        {.servo_id = 3, .zero_ticks = 2048, .direction = Direction::normal, .min_degrees = -30.0f, .max_degrees = 30.0f, .rest_degrees = 0.0f, .rest_stage = 1},
+        {.servo_id = 4, .zero_ticks = 2048, .direction = Direction::normal, .min_degrees = -30.0f, .max_degrees = 30.0f, .rest_degrees = 0.0f, .rest_stage = 2},
+        {.servo_id = 5, .zero_ticks = 2048, .direction = Direction::normal, .min_degrees = -30.0f, .max_degrees = 30.0f, .rest_degrees = 0.0f, .rest_stage = 2}
 
 
     }};
